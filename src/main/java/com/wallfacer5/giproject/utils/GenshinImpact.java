@@ -11,20 +11,13 @@ import com.wallfacer5.giproject.entity.BBSHeaderConfig;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import org.jsoup.Connection.Method;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.DigestUtils;
 
 public class GenshinImpact {
     static Logger log = LoggerFactory.getLogger(GenshinImpact.class);
-
-    // public static String getPlayerInfoByUid(String uid, String cookies) {
-    //     return getDataWithJsoup(getPlayerUrlByUid(uid), cookies);
-    // }
-
-    // public static String getSpiralAbyssInfoByUid(String uid, int scheduleType, String cookies) {
-    //     return getDataWithJsoup(getSpiralAbyssUrlByUid(uid, scheduleType), cookies);
-    // }
 
     public static String getPlayerInfoByUid(String uid, BBSHeaderConfig headerConfig){
         String url = getPlayerUrlByUid(uid);
@@ -47,6 +40,18 @@ public class GenshinImpact {
         return null;
     }
 
+    public static String getCharacterInfo(BBSHeaderConfig headerConfig, String reqBody){
+        // POST请求，附带json{"character_ids":[角色id,角色id,角色id,..........],"role_id":"游戏ID","server":"所在服"}
+        String url = "https://api-takumi.mihoyo.com/game_record/genshin/api/character";
+        Connection conn = getConnection(url, headerConfig, reqBody);
+        try {
+            return conn.post().body().text();
+        } catch (IOException e) {
+            log.warn("Exception:[{}]", e.getMessage());
+        }
+        return null;
+    }
+
     private static Connection getConnection(String url, BBSHeaderConfig headerConfig, String reqBody) {
         Connection conn = Jsoup.connect(url)
         .header("DS", getDS())
@@ -64,8 +69,9 @@ public class GenshinImpact {
         .header("Accept-Language", headerConfig.getAcceptLanguage())
         .cookie("Cookie", headerConfig.getCookies())
         .ignoreContentType(true);
-        if(!"".equals(url) && url != null){
-            conn.requestBody(reqBody);
+        if(!"".equals(reqBody) && reqBody != null){
+            log.warn("POST Request. Body:[{}]", reqBody);
+            conn = conn.requestBody(reqBody).method(Method.POST);
         }
         return conn;
     }
@@ -130,7 +136,7 @@ public class GenshinImpact {
         return new String(str);
     }
 
-    private static String getServerByUid(String uid) {
+    public static String getServerByUid(String uid) {
         char first = uid.charAt(0);
         String server = null;
         switch (first) {
@@ -149,15 +155,10 @@ public class GenshinImpact {
         return server;
     }
 
-    // https://api-takumi.mihoyo.com/game_record/genshin/api/character
-    // ?server={}&role_id={}&character_ids={}
-    // reqeustBody(json)
 
     public static void main(String[] args) throws URISyntaxException, IOException {
         String cookies = "UM_distinctid=1785795bf2678-09bd851147d029-2542793a-49a10-1785795bf271b3; _MHYUUID=94dd314e-fd51-4c24-8a97-7e8416d5a24f; ltoken=UsSzYPwOZSSrS4FILImXL4vgp7ntMCgSKTmHt8AP; ltuid=239925102; account_id=239925102; login_ticket=T3eGQbIR6N0LgrIsFWr5KYUNUJT91rgbaRYWR5yY; cookie_token=kLl1Z5WcwAOsrKeeqR3hFBgRQjZ5QrfK601A3gL1";
         String url = getPlayerUrlByUid("143820223");
-        // System.out.println(getDataJsoup(url, cookies));
-
         String data = getDataWithJsoup(url, cookies);
         try (Writer writer = new FileWriter(new File("data.json"))) {
             writer.write(data);
