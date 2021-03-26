@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.wallfacer5.giproject.entity.Player;
 import com.wallfacer5.giproject.service.CharacterService;
 import com.wallfacer5.giproject.service.PlayerService;
 import com.wallfacer5.giproject.service.SpiralAbyssService;
@@ -33,6 +34,11 @@ public class APIController {
 
     @GetMapping("/player/{uid}")
     public String getPlayerInfo(@PathVariable("uid") String uid){
+        return playerService.getPlayerInfoByUid(uid);
+    }
+
+    @GetMapping("/player2/{uid}")
+    public Player getPlayerInfo(@PathVariable("uid") Long uid){
         return playerService.getPlayerInfoByUid(uid);
     }
 

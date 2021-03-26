@@ -69,6 +69,7 @@ public class GenshinImpact {
         .header("Accept-Language", headerConfig.getAcceptLanguage())
         .cookie("Cookie", headerConfig.getCookies())
         .ignoreContentType(true);
+        // 部分查询需要转成 POST 请求
         if(!"".equals(reqBody) && reqBody != null){
             log.warn("POST Request. Body:[{}]", reqBody);
             conn = conn.requestBody(reqBody).method(Method.POST);
