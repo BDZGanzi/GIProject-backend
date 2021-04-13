@@ -12,16 +12,18 @@ import com.wallfacer5.giproject.service.SpiralAbyssService;
 import com.wallfacer5.giproject.utils.GenshinImpact;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.extern.slf4j.Slf4j;
+// import lombok.extern.slf4j.Slf4j;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
-@Slf4j
+// @Slf4j
 public class APIController {
     @Autowired
     PlayerService playerService;

@@ -142,11 +142,9 @@ public class GenshinImpact {
         String server = null;
         switch (first) {
         case '1':
-            log.info("in case:[{}]", "cn_gf01");
             server = "cn_gf01";
             break;
         case '6':
-            log.info("in case:[{}]", "na");
             server = "na";
             break;
         default:
