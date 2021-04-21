@@ -1,7 +1,6 @@
 package com.wallfacer5.giproject.service;
 
-import com.wallfacer5.giproject.entity.BBSHeaderConfig;
-import com.wallfacer5.giproject.utils.GenshinImpact;
+import com.wallfacer5.giproject.utils.SourceAPI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,9 +11,10 @@ import org.springframework.stereotype.Component;
 // @Slf4j
 public class CharacterService {
     @Autowired
-    BBSHeaderConfig headerConfig;
+    SourceAPI sourceApi;
 
     public String getCharacterInfo(String reqBody){
-        return GenshinImpact.getCharacterInfo(headerConfig, reqBody);
+        return sourceApi.getCharacterInfo(reqBody);
+        // return GenshinImpact.getCharacterInfo(headerConfig, reqBody);
     }
 }
