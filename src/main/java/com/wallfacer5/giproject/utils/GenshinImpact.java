@@ -9,7 +9,7 @@ import org.springframework.util.DigestUtils;
 public class GenshinImpact {
     static Logger log = LoggerFactory.getLogger(GenshinImpact.class);
 
-    private static String BASE_URL = "https://api-takumi.mihoyo.com/game_record/genshin/api/";
+    // private static String BASE_URL = "https://api-takumi.mihoyo.com/game_record/genshin/api/";
 
     public static String getPlayerUrlByUid(String uid) {
         String server = getServerByUid(uid);
@@ -33,7 +33,6 @@ public class GenshinImpact {
         String t = Long.toString(System.currentTimeMillis() / 1000);
         String r = MyRandom(6); // Todo 有没有其他实现？
         String c = DigestUtils.md5DigestAsHex(("salt=" + md5Version + "&t=" + t + "&r=" + r).getBytes());
-        log.info("fun 1----version[{}]t[{}]c[{}]", md5Version, t, c);
         return t + "," + r + "," + c;
     }
 
